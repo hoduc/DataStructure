@@ -2,6 +2,7 @@
 #include "Card.h"
 
 int main(){
+	/*
 	//testing card
 	CARD king;
 	king._order	= KING;
@@ -12,10 +13,23 @@ int main(){
 				 << king._side  << " "		//0
 				 << king._suit	 << " "		//0
 				 ;
-	if (king._suit == SUIT::SPADE && king._suit == COLOR::BLACK){
+	if (king._suit == SPADE && king._suit == BLACK){
 		std::cout << "K" << "S" << std::endl;
 	}
 	else std::cout << "Wrong";
+	
+	*/
+
+
+	//testing deck init
+	deck.print();		//print the deck
+	std::cout << std::endl;
+
+	//testing shuffle
+	std::cout << "TESTING SHUFFLE" << std::endl;
+	deck.shuffle();
+	deck.print();
+	std::cout << std::endl;
 
 	return 0;
 }
