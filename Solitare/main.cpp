@@ -30,6 +30,17 @@ int main(){
 	deck.shuffle();
 	deck.print();
 	std::cout << std::endl;
-
+	
+	//testing pop
+	std::cout << "Testing pop" << std::endl;
+	CARD t = deck.pop();
+	printCardBy(t._order);
+	std::cout << "-";
+	printCardBy(t._suit);
+	std::cout << "-";
+	printCardBy(t._side);
+	std::cout << "-";
+	printCardBy(t._color);
+	std::cout << std::endl;
 	return 0;
 }

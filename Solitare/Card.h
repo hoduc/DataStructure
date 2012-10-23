@@ -14,6 +14,13 @@ typedef struct card{
 }CARD;
 
 
+void printCardBy(COLOR c){
+	switch(c){
+		case RED:	std::cout << "R";
+						break;
+		case BLACK : std::cout << "B";
+	}
+}
 void printCardBy(ORDER o){
 	switch(o){
 		case ARCH: std::cout << "A";
@@ -76,7 +83,7 @@ private:
 	int sz;
 	int top;					//top of the card
 public:
-	Deck():sz(NUMBER_OF_CARD){
+	Deck():sz(NUMBER_OF_CARD),top(NUMBER_OF_CARD-1){
 		cards = new CARD[sz];
 		init();
 	}
@@ -90,12 +97,17 @@ public:
 		int k = 0;
 		for (int i = 0; i < sz; ++i){
 			//the deck is initialized 13 number once
-			
 			if (i > 0 && i%ORDER_TOTAL==0){
 				//reset j, k
 				j = 0;
 				k++;
 			}
+
+			//color
+			if (k == SPADE || k == CLUB){
+				cards[i]._color = BLACK;
+			}
+			else cards[i]._color = RED;
 			cards[i]._order = (ORDER)j;			//order of the card
 			cards[i]._side = BACK;					//face down all the card
 			cards[i]._suit = (SUIT)k;
@@ -119,6 +131,18 @@ public:
 		return sz;
 	}
 	
+	bool empty(){
+		return sz==0;
+	}
+	//pop cards off of the top of the deck
+	CARD pop(){
+		if (!empty()){
+			sz--;
+			return cards[top--];
+		}
+		else return cards[top];
+	}
+
 	void print(){
 		for (int i = 0 ; i < sz; ++i){
 			if (i%ORDER_TOTAL == 0)
@@ -127,18 +151,52 @@ public:
 			std::cout << "-";
 			printCardBy(cards[i]._suit);
 			std::cout << "-";
+			printCardBy(cards[i]._color);
+			std::cout << "-";
 			printCardBy(cards[i]._side);
 			std::cout << " ";
 		}
 	}
 }DECK;
 
-//Column class (Link list of card)
+//Mini Stack class -- used for Home stack
+//						 -- used for Column
+//Doubly linked list implementation
 
-//Column class (7 column)
+typedef class MiniStack{
+private:
+	typedef struct cardList{
+		CARD _card;
+		CARD *prev;
+		CARD *next;
+		cardList():prev(NULL), next(NULL){}
+	}CS;							//card stack
+	CARD *top;					//top of the the stack
+	CARD *lastFaceUp			//pointer to the last element that is faceup
+	int sz;						//size
+public:
+	MiniStack():sz(0){
+	}
+	
+	//push to the stack
+	void push(CARD aCard){
+	}
 
-//Home class (stack of card - 4)
+	//pop the top card off the stack
+	CARD pop(){
+		
+	}
 
-//helper function for print
+	bool empty(){
+		return sz == 0;
+	}
+
+	int size(){
+		return sz;
+	}
+
+}MST;
 
 DECK deck;
+MST  home[4];		//home holder
+MST  col[7];		//7 columns of cards
