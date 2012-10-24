@@ -13,6 +13,14 @@ typedef struct card{
 	SIDE _side;
 }CARD;
 
+//a stack structure
+typedef struct cardStack{
+	CARD aCard;
+	struct cardStack* prev;
+	struct cardStack* next;
+	cardStack():prev(NULL), next(NULL){}
+}CS;
+typedef struct cardStack* pCS;
 
 void printCardBy(COLOR c){
 	switch(c){
@@ -76,15 +84,20 @@ void printCardBy(SIDE s){
 
 //52 card total
 #define NUMBER_OF_CARD 52
+
 //Deck class
 typedef class Deck{
 private:
 	CARD *cards;
+	pCS _deck;
+	pCS top;
 	int sz;
-	int top;					//top of the card
+
 public:
-	Deck():sz(NUMBER_OF_CARD),top(NUMBER_OF_CARD-1){
-		cards = new CARD[sz];
+	Deck():sz(NUMBER_OF_CARD){
+		cards = new CARD[NUMBER_OF_CARD];
+		_deck = new CS;
+		top = _deck;
 		init();
 	}
 	
@@ -125,6 +138,16 @@ public:
 			cards[j] = cards[i];
 			cards[i] = temp;
 		}
+
+		//copy to the main linked list structure
+		for (int i = 0; i < NUMBER_OF_CARD; ++i){
+			top->aCard = cards[i];
+			top->next = new CS;
+			top->next->prev = top;
+			top = top->next;
+		}
+
+		top = top->prev;
 	}
 	
 	int size(){
@@ -134,27 +157,27 @@ public:
 	bool empty(){
 		return sz==0;
 	}
-	//pop cards off of the top of the deck
-	CARD pop(){
-		if (!empty()){
-			sz--;
-			return cards[top--];
-		}
-		else return cards[top];
+	
+	pCS pop(){
+		pCS temp = top;
+		top->prev->next = top->next;
+		top = top->prev;
+		return temp;
 	}
 
 	void print(){
-		for (int i = 0 ; i < sz; ++i){
-			if (i%ORDER_TOTAL == 0)
+		pCS temp = _deck;
+		int i = 0;
+		while (temp != top->next){
+			if (i %ORDER_TOTAL == 0)
 				std::cout << std::endl;
-			printCardBy(cards[i]._order);
-			std::cout << "-";
-			printCardBy(cards[i]._suit);
-			std::cout << "-";
-			printCardBy(cards[i]._color);
-			std::cout << "-";
-			printCardBy(cards[i]._side);
+			printCardBy(temp->aCard._order);
+			printCardBy(temp->aCard._suit);
+			printCardBy(temp->aCard._color);
+			printCardBy(temp->aCard._side);
 			std::cout << " ";
+			temp = temp->next;
+			i++;
 		}
 	}
 }DECK;
@@ -162,41 +185,4 @@ public:
 //Mini Stack class -- used for Home stack
 //						 -- used for Column
 //Doubly linked list implementation
-
-typedef class MiniStack{
-private:
-	typedef struct cardList{
-		CARD _card;
-		CARD *prev;
-		CARD *next;
-		cardList():prev(NULL), next(NULL){}
-	}CS;							//card stack
-	CARD *top;					//top of the the stack
-	CARD *lastFaceUp			//pointer to the last element that is faceup
-	int sz;						//size
-public:
-	MiniStack():sz(0){
-	}
-	
-	//push to the stack
-	void push(CARD aCard){
-	}
-
-	//pop the top card off the stack
-	CARD pop(){
-		
-	}
-
-	bool empty(){
-		return sz == 0;
-	}
-
-	int size(){
-		return sz;
-	}
-
-}MST;
-
 DECK deck;
-MST  home[4];		//home holder
-MST  col[7];		//7 columns of cards

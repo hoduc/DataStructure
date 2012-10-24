@@ -33,14 +33,12 @@ int main(){
 	
 	//testing pop
 	std::cout << "Testing pop" << std::endl;
-	CARD t = deck.pop();
-	printCardBy(t._order);
-	std::cout << "-";
-	printCardBy(t._suit);
-	std::cout << "-";
-	printCardBy(t._side);
-	std::cout << "-";
-	printCardBy(t._color);
+	pCS t = deck.pop();
+	printCardBy(t->aCard._order);
+	printCardBy(t->aCard._suit);
+	printCardBy(t->aCard._side);
+	printCardBy(t->aCard._color);
 	std::cout << std::endl;
+
 	return 0;
 }
