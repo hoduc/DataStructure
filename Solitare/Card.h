@@ -182,7 +182,84 @@ public:
 	}
 }DECK;
 
-//Mini Stack class -- used for Home stack
-//						 -- used for Column
-//Doubly linked list implementation
+//naive approach
+//make 2 class, column and home
+
+//Home stack class
+//can only push
+//Sorry no pop
+typedef class Home{
+private:
+	pCS bottom;
+	pCS top;
+	int sz;
+public:
+	Home():sz(0){
+		bottom = new CS;
+	}
+
+	//pushing to the home stack
+	void push(pCS &aCS){
+		//if the stack is empty
+		if (empty()){
+			//must start with ARCH
+			if (aCS->aCard._order == ARCH){
+				bottom = aCS;
+				top = bottom;
+				sz++;
+			}
+			//trying to put not arch first
+			else{
+				std::cout << "Invalid move!!!"
+							 << "Must start with ARCH"
+							 << std::endl;
+			}
+		}
+		
+		//if the stack already has something in it
+		else{
+			//must push the same color and 'one-bigger-than' bottom card
+			if ((top->aCard._suit == aCS->aCard._suit) && (top->aCard._order+1 == aCS->aCard._order)){
+				top->next = aCS;
+				aCS->prev = top;
+				top = aCS;
+				sz++;
+			}
+			//some error
+			else{
+				//trying to push different color to the stack
+				if (top->aCard._color != aCS->aCard._color){
+					std::cout << "Not the same color";
+				}
+
+				if (top->aCard._order+1 != aCS->aCard._order){
+					std::cout << "Wrong order";
+				}
+
+				std::cout << std::endl;
+			}
+		}
+	}
+
+	bool empty(){
+		return sz == 0;
+	}
+
+	int size(){
+		return sz;
+	}
+
+	void print(){
+		pCS temp = bottom;
+		while (temp != top->next){
+			printCardBy(temp->aCard._order);
+			printCardBy(temp->aCard._suit);
+			printCardBy(temp->aCard._color);
+			printCardBy(temp->aCard._side);
+			std::cout << " ";
+			temp = temp->next;
+		}
+	}
+
+}HOME;
 DECK deck;
